@@ -219,7 +219,7 @@ GnmError sceGnmCreateRenderTarget(
 	    .linearwidth = actualw,
 	    .linearheight = actualh,
 	    .lineardepth = actualdepth,
-	    .numfragsperpixel = 1 << ci->numfragments,
+	    .numfragsperpixel = ci->numfragments,
 	    .basetiledpitch = ci->pitch,
 
 	    .miplevel = 0,

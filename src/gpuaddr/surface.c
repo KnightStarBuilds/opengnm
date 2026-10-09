@@ -2323,8 +2323,8 @@ GpaError sceGpaComputeSurfaceCoord(
     uint64_t* outoffset, uint64_t* outbitoffset, const GpaSurfaceContext* ctx,
     uint32_t x, uint32_t y, uint32_t z, uint32_t fragindex
 ) {
-	if (x > ctx->paddedwidth || y > ctx->paddedheight ||
-	    z > ctx->paddeddepth || fragindex > ctx->numfragsperpixel) {
+	if (!ctx || x >= ctx->paddedwidth || y >= ctx->paddedheight ||
+	    z >= ctx->paddeddepth || fragindex >= ctx->numfragsperpixel) {
 		return GPA_ERR_INVALID_ARGS;
 	}
 
@@ -2372,7 +2372,7 @@ GpaError sceGpaComputeSurfaceCoord(
 	case GNM_ARRAY_1D_TILED_THICK:
 		err = ComputeSurfaceAddrFromCoordMicroTiled(
 		    x, y, z, fragindex, ctx->bitsperelement, ctx->paddedwidth,
-		    ctx->paddedheight, ctx->paddeddepth, arraymode,
+		    ctx->paddedheight, ctx->numfragsperpixel, arraymode,
 		    microTileType, isDepthSampleOrder, &addr, &bitPosition
 		);
 		break;
@@ -2390,7 +2390,7 @@ GpaError sceGpaComputeSurfaceCoord(
 	case GNM_ARRAY_PRT_3D_TILED_THICK:
 		err = ComputeSurfaceAddrFromCoordMacroTiled(
 		    x, y, z, fragindex, ctx->bitsperelement, ctx->paddedwidth,
-		    ctx->paddedheight, ctx->paddeddepth, arraymode,
+		    ctx->paddedheight, ctx->numfragsperpixel, arraymode,
 		    microTileType, isDepthSampleOrder, ctx->pipeswizzlemask,
 		    ctx->bankswizzlemask, &ctx->tileinfo, &addr, &bitPosition
 		);

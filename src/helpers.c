@@ -340,8 +340,10 @@ void PS4_SYSV_ABI sceGnmVideoOutClose(GnmVideoOut* videoout) {
 	}
 #if OPENGNM_HELPERS_HAS_ORBIS_LIBKERNEL && OPENGNM_HELPERS_HAS_ORBIS_VIDEOOUT
 	if (videoout->handle >= 0) {
-		for (uint32_t i = 0; i < videoout->registeredbuffers; i += 1) {
-			sceVideoOutUnregisterBuffers(videoout->handle, (int32_t)i);
+		if (videoout->registeredbuffers) {
+			// All buffers were registered together on this new handle. The
+			// unregister argument is an attribute-group index, not a buffer.
+			sceVideoOutUnregisterBuffers(videoout->handle, 0);
 		}
 		sceVideoOutClose(videoout->handle);
 	}

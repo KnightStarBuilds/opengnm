@@ -201,7 +201,7 @@ GnmError sceGnmCreateFetchShader(
 		     curbuf += 1, curvtxidx += 1) {
 			int semanticidx = curvtxidx;
 			if (ci->remaptable) {
-				int semanticidx = findremap(ci, curvtxidx);
+				semanticidx = findremap(ci, curvtxidx);
 				if (semanticidx == -1) {
 					return GNM_ERROR_SEMANTIC_NOT_FOUND;
 				}

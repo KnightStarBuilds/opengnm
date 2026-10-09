@@ -733,7 +733,14 @@ GpaError sceGpaGetTileInfo(
 	GnmBankWidth bankw = GNM_SURF_BANK_WIDTH_1;
 	GnmBankHeight bankh = GNM_SURF_BANK_HEIGHT_1;
 	GnmMacroTileAspect macroaspect = GNM_SURF_MACRO_ASPECT_1;
-	const GnmTileSplit tilesplit = gpaGetTileSplit(tilemode);
+	GnmTileSplit tilesplit = gpaGetTileSplit(tilemode);
+	if (gpaGetMicroTileMode(tilemode) != GNM_SURF_DEPTH_MICRO_TILING) {
+		const uint32_t tilebytes1x = bpp * MICROTILE_SIZE * MICROTILE_SIZE *
+			gpaGetMicroTileThickness(arraymode) / 8;
+		const uint32_t splitbytes = umin(DRAM_ROW_SIZE,
+			umax(256u, (1u << gpaGetSampleSplit(tilemode)) * tilebytes1x));
+		tilesplit = (GnmTileSplit)QLog2(splitbytes / 64);
+	}
 	const GnmPipeConfig pipeconfig = gpumode == GNM_GPU_NEO
 					     ? gpaGetAltPipeConfig(tilemode)
 					     : gpaGetPipeConfig(tilemode);

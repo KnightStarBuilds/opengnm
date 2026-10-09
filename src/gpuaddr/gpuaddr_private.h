@@ -151,11 +151,10 @@ static inline uint32_t getelemsperblocktall(const GnmDataFormat fmt) {
 static inline uint32_t GetTileSplitBytes(
     GnmTileSplit split, uint32_t bpp, uint32_t thickness
 ) {
-	uint32_t tileBytes1x = BitsToBytes32(bpp * MicroTilePixels * thickness);
-
-	// Non-depth entries store a split factor
-	uint32_t sampleSplit = 64 << split;
-	return umax(256u, sampleSplit * tileBytes1x);
+	(void)bpp;
+	(void)thickness;
+	// GpaTileInfo stores the resolved byte split, not a sample multiplier.
+	return 64u << split;
 }
 
 uint64_t gpaComputeSurfaceAddrFromCoordLinear(

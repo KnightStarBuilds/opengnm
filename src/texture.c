@@ -150,7 +150,7 @@ GnmError sceGnmCreateTexture(GnmTexture* tex, const GnmTextureCreateInfo* ci) {
 	    .linearwidth = ci->width,
 	    .linearheight = ci->height,
 	    .lineardepth = ci->depth,
-	    .numfragsperpixel = 1 << ci->numfragments,
+	    .numfragsperpixel = ci->numfragments,
 	    .basetiledpitch = ci->pitch,
 
 	    .miplevel = 0,
@@ -191,7 +191,7 @@ GnmError sceGnmCreateTexture(GnmTexture* tex, const GnmTextureCreateInfo* ci) {
 				       ? ci->numslices * 6
 				       : ci->numslices;
 	tex->basearray = 0;
-	tex->lastarray = numslices;
+	tex->lastarray = numslices - 1;
 
 	// setMipLevelRange
 	tex->baselevel = 0;
